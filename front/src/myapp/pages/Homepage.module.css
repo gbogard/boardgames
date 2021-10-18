@@ -1,0 +1,6 @@
+.home {
+  @apply bg-white shadow rounded-xl;
+  max-width: 550px;
+  margin: 4rem auto;
+  padding: 2rem;
+}
