@@ -12,16 +12,14 @@ object NextLink:
   protected val component = JsComponent[Props, Children.Varargs, Null](raw)
 
   def apply(href: String, children: VdomNode*) =
-    component(Props(href))(children: _*)
+    component(Props(href))(children*)
 
   @js.native
-  trait Props extends js.Object {
+  trait Props extends js.Object:
     var href: String = js.native
-  }
 
   object Props:
-    def apply(href: String): Props = {
+    def apply(href: String): Props =
       val p = (new js.Object).asInstanceOf[Props]
       p.href = href
       p
-    }

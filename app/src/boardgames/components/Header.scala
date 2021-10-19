@@ -2,8 +2,8 @@ package boardgames.components
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.vdom.html_<^._
+import japgolly.scalajs.react.*
+import japgolly.scalajs.react.vdom.html_<^.*
 
 enum Style:
   case Wooden

@@ -1,7 +1,7 @@
 package boardgames.pages
 
-import japgolly.scalajs.react._
-import japgolly.scalajs.react.vdom.html_<^._
+import japgolly.scalajs.react.*
+import japgolly.scalajs.react.vdom.html_<^.*
 import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
