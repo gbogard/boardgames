@@ -2,27 +2,16 @@ ThisBuild / scalaVersion := "3.0.1"
 
 lazy val root = project
   .in(file("."))
-  .disablePlugins(RevolverPlugin)
-  .aggregate(front, server)
+  .aggregate(app)
   .settings(
-    name := "scala3-nextjs",
+    name := "boardgames"
   )
 
-lazy val shared = crossProject(JSPlatform, JVMPlatform)
-  .crossType(CrossType.Pure)
-  .in(file("shared"))
-  .settings(name := "shared")
-  .jvmSettings()
-  .jsSettings()
-
-lazy val server = project
-  .in(file("server"))
-  .dependsOn(shared.jvm)
-
-lazy val front = project
-  .in(file("front"))
+lazy val app = project
+  .in(file("app"))
   .enablePlugins(NextApp)
-  .disablePlugins(RevolverPlugin)
-  .dependsOn(shared.js)
-
-
+  .settings(
+    libraryDependencies ++= Seq(
+      "dev.guillaumebogard" %%% "scalajs-idb-core" % "0.1.0"
+    )
+  )

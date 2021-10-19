@@ -1,0 +1,30 @@
+html,
+body {
+  @apply bg-black;
+  @apply font-sans;
+  padding: 0;
+  margin: 0;
+  max-width: 600px;
+  min-height: 100vh;
+}
+
+a {
+  @apply text-blue-500;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+h1 {
+  @apply text-4xl mb-1 mb-4;
+}
+
+h2 {
+  @apply text-3xl mb-1 mb-3;
+}
+
+p {
+  @apply leading-relaxed mt-1 mb-3;
+}
