@@ -17,9 +17,21 @@ object Style:
     case Wooden => s"${sheet("header")} ${sheet("wooden")}"
 
 object Header:
-  case class Props(style: Style = Style.Wooden)
+  case class Props(
+      title: String,
+      rightSide: Option[VdomNode] = None,
+      leftSide: Option[VdomNode] = None,
+      style: Style = Style.Wooden
+  )
 
   private val component =
-    ScalaFnComponent[Props](props => <.nav(^.className := Style(props.style)))
+    ScalaFnComponent[Props](props =>
+      <.nav(
+        ^.className := Style(props.style),
+        <.div(props.leftSide),
+        <.div(<.h1(^.className := "m-0 font-bold text-3xl", props.title)),
+        <.div(props.rightSide)
+      )
+    )
 
-  def apply(props: Props = Props()) = component(props)
+  def apply(props: Props) = component(props)

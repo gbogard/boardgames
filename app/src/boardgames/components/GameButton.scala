@@ -8,7 +8,7 @@ import scalajs.js
 import scala.scalajs.js.annotation.JSImport
 
 object GameButton:
-  case class Props(game: Game)
+  case class Props(game: GameType)
 
   @js.native
   @JSImport(
@@ -17,8 +17,8 @@ object GameButton:
   )
   protected val style: js.Dictionary[String] = js.native
 
-  private def image(game: Game) = game match
-    case Game.SevenWonders => "/7wonders-btn.png"
+  private def image(game: GameType) = game match
+    case GameType.SevenWonders => "/7wonders-btn.png"
 
   private val component =
     ScalaFnComponent[Props](props =>
@@ -32,4 +32,4 @@ object GameButton:
       )
     )
 
-  def apply(game: Game) = component(Props(game))
+  def apply(game: GameType) = component(Props(game))

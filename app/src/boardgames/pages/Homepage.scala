@@ -23,9 +23,8 @@ object Homepage:
           }
           """
         ),
-        Header(),
-        <.h1("My app", ^.className := "font-serif"),
-        GameButton(Game.SevenWonders)
+        Header(Header.Props("Games")),
+        GameButton(GameType.SevenWonders)
       )
     )
     .build
