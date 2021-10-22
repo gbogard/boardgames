@@ -1,7 +1,7 @@
 {
   "presets": ["next/babel"],
   "plugins": [],
-  "ignore": ["**target/"],
+  "ignore": ["target/**"],
   "compact": false
 }
 

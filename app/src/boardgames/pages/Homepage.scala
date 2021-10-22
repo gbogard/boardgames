@@ -15,15 +15,8 @@ object Homepage:
     .builder[Unit]
     .renderStatic(
       ReactFragment(
-        <.styleTag(
-          """
-          body { 
-            background-image: url(./green-felt-texture.jpg); 
-            background-size: 300px 300px;
-          }
-          """
-        ),
-        Header(Header.Props("Games")),
+        PageBackground(PageBackground.GreenFelt),
+        Header("Games"),
         GameButton(GameType.SevenWonders)
       )
     )

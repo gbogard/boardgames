@@ -3,6 +3,7 @@ package boardgames
 import java.time.Instant
 import scala.util.Random
 import dev.guillaumebogard.idb.api.*
+import dev.guillaumebogard.idb.time.given
 
 final case class Player(name: String, color: Color)
     derives ObjectEncoder,
@@ -128,8 +129,9 @@ object SevenWonders:
   end PlayerState
 
   given Ordering[PlayerState] with
+    val scoreOrdering = summon[Ordering[Int]]
     def compare(x: PlayerState, y: PlayerState): Int =
-      summon[Ordering[Int]].compare(x.totalScore, y.totalScore)
+      scoreOrdering.compare(x.totalScore, y.totalScore)
 
   final case class ScientificScore(
       tabletSymbols: Int,
@@ -153,9 +155,15 @@ object SevenWonders:
 
   final case class Game(
       id: GameId,
+      createdAt: java.time.Instant,
       state: GameState,
       players: Map[PlayerId, PlayerState]
   ) derives ObjectEncoder,
         Decoder:
     def winner: Option[PlayerState] = players.values.maxOption
   end Game
+
+  given Ordering[Game] with
+    val instantOrdering = summon[Ordering[java.time.Instant]].reverse
+    def compare(x: Game, y: Game) =
+      instantOrdering.compare(x.createdAt, y.createdAt)

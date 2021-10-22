@@ -13,10 +13,15 @@ import scala.sys.process._
 object NextApp extends AutoPlugin {
   override def requires = ScalaJSPlugin
   override def trigger = noTrigger
-  private val scalaJsReactVersion = "2.0.0-RC3"
 
   object autoImport {
     val npm = SettingKey[String]("npm", "The path to the npm executable")
+    val scalaJsReactVersion = 
+      SettingKey[String]("scalaJsReactVersion", "The version of scalaJsReact to use")
+    val scalaJsReactUseGeneric = SettingKey[Boolean](
+      "scalaJsReactUseGeneric",
+      "Whether to use the 'core-generic' module scalajs-react, that provides effect agnositicism"
+    )
     val nextServerProcess = AttributeKey[Option[Process]](
       "nextServerProcess",
       "A handle to the currently-running next dev server"
@@ -51,10 +56,21 @@ object NextApp extends AutoPlugin {
     (Compile / fastLinkJS / scalaJSLinkerConfig) ~= {
       _.withModuleSplitStyle(ModuleSplitStyle.SmallestModules)
     },
-    libraryDependencies ++= Seq(
-      "com.github.japgolly.scalajs-react" %%% "core" % scalaJsReactVersion
-    ),
-    npm := "/Users/gbogard/.nix-profile/bin/npm",
+    (Compile / fullLinkJS / scalaJSLinkerConfig) ~= {
+      _.withClosureCompiler(false)
+    },
+    scalaJsReactVersion := "2.0.0-RC4",
+    scalaJsReactUseGeneric := false,
+    libraryDependencies ++= 
+      (if (scalaJsReactUseGeneric.value) {
+        Seq(
+          "com.github.japgolly.scalajs-react" %%% "core-generic" % scalaJsReactVersion.value,
+          "com.github.japgolly.scalajs-react" %%% "util-dummy-defaults" % scalaJsReactVersion.value
+        )
+      } else {
+        Seq("com.github.japgolly.scalajs-react" %%% "core" % scalaJsReactVersion.value)
+      }),
+    npm := "npm",
     startNextServer := {
       if (!nextServerIsRunning.value) {
         val log = streams.value.log
