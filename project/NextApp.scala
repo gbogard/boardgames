@@ -16,7 +16,7 @@ object NextApp extends AutoPlugin {
 
   object autoImport {
     val npm = SettingKey[String]("npm", "The path to the npm executable")
-    val scalaJsReactVersion = 
+    val scalaJsReactVersion =
       SettingKey[String]("scalaJsReactVersion", "The version of scalaJsReact to use")
     val scalaJsReactUseGeneric = SettingKey[Boolean](
       "scalaJsReactUseGeneric",
@@ -61,15 +61,8 @@ object NextApp extends AutoPlugin {
     },
     scalaJsReactVersion := "2.0.0-RC4",
     scalaJsReactUseGeneric := false,
-    libraryDependencies ++= 
-      (if (scalaJsReactUseGeneric.value) {
-        Seq(
-          "com.github.japgolly.scalajs-react" %%% "core-generic" % scalaJsReactVersion.value,
-          "com.github.japgolly.scalajs-react" %%% "util-dummy-defaults" % scalaJsReactVersion.value
-        )
-      } else {
-        Seq("com.github.japgolly.scalajs-react" %%% "core" % scalaJsReactVersion.value)
-      }),
+    libraryDependencies ++=
+        Seq("com.github.japgolly.scalajs-react" %%% "core" % scalaJsReactVersion.value),
     npm := "npm",
     startNextServer := {
       if (!nextServerIsRunning.value) {

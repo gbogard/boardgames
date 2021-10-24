@@ -1,4 +1,4 @@
-package boardgames.components
+package boardgames.shared
 
 import boardgames.*
 import boardgames.bindings.*
@@ -12,7 +12,7 @@ object GameButton:
 
   @js.native
   @JSImport(
-    "@src/boardgames/components/GameButton.module.css",
+    "@src/boardgames/shared/GameButton.module.css",
     JSImport.Namespace
   )
   protected val style: js.Dictionary[String] = js.native

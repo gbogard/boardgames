@@ -1,13 +1,13 @@
-package boardgames.pages.sevenwonders
+package boardgames.sevenwonders
 
+import boardgames.*
+import boardgames.shared.*
 import cats.implicits.*
 import japgolly.scalajs.react.*
-import japgolly.scalajs.react.vdom.html_<^.*
-import scala.scalajs.js.annotation.*
-import scala.scalajs.js
-import boardgames.*
-import boardgames.components.*
 import japgolly.scalajs.react.feature.ReactFragment
+import japgolly.scalajs.react.vdom.html_<^.*
+import scala.scalajs.js
+import scala.scalajs.js.annotation.*
 
 object GamesPage:
 
@@ -28,4 +28,4 @@ object GamesPage:
   def apply() = component()
 
 @JSExportTopLevel("GamesPage", "GamesPage")
-val HomePageJS = GamesPage.component.toJsComponent.raw
+val GamesPageJS = GamesPage.component.toJsComponent.raw
