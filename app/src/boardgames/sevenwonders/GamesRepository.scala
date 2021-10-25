@@ -14,8 +14,6 @@ trait GamesRepository:
 
   def upsertGame(game: Game): Future[Game]
 
-  def removeGame(id: GameId): Future[Unit]
-
 end GamesRepository
 
 object GamesRepositoryImpl extends GamesRepository:
@@ -39,8 +37,5 @@ object GamesRepositoryImpl extends GamesRepository:
         sevenWondersGames.put(game) as game
       ).logErrors
     )
-
-  def removeGame(id: GameId): Future[Unit] =
-    db.flatMap(_.readWrite(NonEmptyList.of(sevenWondersGames.name))(???)).logErrors
 
 end GamesRepositoryImpl

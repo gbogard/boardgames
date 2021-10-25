@@ -1,7 +1,7 @@
 package boardgames.sevenwonders
 
 import boardgames.*
-import boardgames.bindings.NextRouter
+import boardgames.bindings.*
 import boardgames.sevenwonders.*
 import boardgames.shared.*
 import cats.implicits.*
@@ -22,20 +22,43 @@ object GamesPage:
     def renderGame(game: Game) =
       <.div(
         ^.key := game.id.toString,
-        ^.className := "my-4 p-4 bg-black bg-opacity-40",
-        <.ul(game.players.values.toList.toVdomArray(renderPlayer))
+        ^.className := "bg-gray-50 bg-opacity-85 my-4 mx-2 p-2 drop-shadow-md rounded-md",
+        <.table(
+          ^.className := "table-auto text-left",
+          <.thead(
+            <.th(),
+            <.th("T")
+          ),
+          <.tbody(
+            game.players.values.toList
+              .sortBy(-_.totalScore)
+              .toVdomArray(ps =>
+                <.tr(
+                  ^.key := ps.player.id.toString,
+                  <.th(^.className := "w-full", ps.player.name),
+                  <.td(^.className := "whitespace-nowrap", ps.totalScore)
+                )
+              )
+          )
+        ),
+        NextLink(
+          s"/7wonders/games/${game.id}",
+          <.button(
+            ^.className := "bg-purple-300 rounded-md p-2 mt-2 w-full drop-shadow-sm",
+            "Edit game"
+          )
+        )
+          .when(game.state == GameState.Pending)
       )
-
-    def renderPlayer(ps: PlayerState) =
-      <.li(^.key := ps.player.id.toString, ps.player.name)
 
     def render(state: State) =
       ReactFragment(
-        PageBackground(PageBackground.GreenFelt),
+        PageBackground(PageBackground.SevenWonders),
         Header(
           "Last games",
           leftSide = Header.SideItem.BackButton("/").some,
-          rightSide = Header.SideItem.PlusButton("/7wonders/new").some
+          rightSide = Header.SideItem.PlusButton("/7wonders/new").some,
+          style = Header.Style.Marble
         ),
         state.games.toVdomArray(renderGame)
       )
