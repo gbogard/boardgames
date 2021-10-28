@@ -42,7 +42,7 @@ object GamesPage:
           )
         ),
         NextLink(
-          s"/7wonders/games/${game.id}",
+          s"/7wonders/${game.id}",
           <.button(
             ^.className := "bg-purple-300 rounded-md p-2 mt-2 w-full drop-shadow-sm",
             "Edit game"
