@@ -15,7 +15,7 @@ import scala.scalajs.js.annotation.*
 
 object GamesPage:
 
-  final case class Props(router: NextRouter.Facade, repo: GamesRepository)
+  final case class Props(router: NextRouter, repo: GamesRepository)
   final case class State(games: List[Game] = Nil)
 
   final class Backend($ : BackendScope[Props, State]):

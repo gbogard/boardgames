@@ -13,7 +13,7 @@ final case class PlayerState(
     science: ScientificScore = ScientificScore(),
     commerce: Int = 0,
     guilds: Int = 0,
-    cityCards: Int = 0,
+    cities: Int = 0,
     leaders: Int = 0
 ) derives ObjectEncoder,
       Decoder:
@@ -25,7 +25,7 @@ final case class PlayerState(
       science.score +
       commerce +
       guilds +
-      cityCards +
+      cities +
       leaders
 end PlayerState
 
@@ -63,8 +63,8 @@ final case class Game(
       Decoder:
   def winner: Option[PlayerState] = players.values.maxOption
 
-  def addPlayer(player: Player): Game =
-    copy(players = players + ((player.id, PlayerState(player))))
+  def upsertPlayer(ps: PlayerState): Game = copy(players = players + ((ps.player.id, ps)))
+  def upsertPlayer(player: Player): Game =  upsertPlayer(PlayerState(player))
 
   def removePlayer(player: Player): Game =
     copy(players = players - player.id)

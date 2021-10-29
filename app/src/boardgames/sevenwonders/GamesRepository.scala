@@ -8,6 +8,8 @@ import ObjectStores.*
 
 trait GamesRepository:
 
+  def getGame(id: GameId): Future[Option[Game]]
+
   def listGames: Future[List[Game]]
 
   def getLastGame: Future[Option[Game]]
@@ -19,6 +21,11 @@ end GamesRepository
 object GamesRepositoryImpl extends GamesRepository:
   import Database.{*, given}
   import dev.guillaumebogard.idb.api
+  import dev.guillaumebogard.idb.api.*
+
+  def getGame(id: GameId): Future[Option[Game]] =
+    val tx = sevenWondersGames.get(id.toKey)
+    db.flatMap(_.readOnly(NonEmptyList.of(sevenWondersGames.name))(tx)).logErrors
 
   def listGames: Future[List[Game]] =
     val tx = sevenWondersGames.getAll().map(_.toList.sorted)
@@ -28,10 +35,6 @@ object GamesRepositoryImpl extends GamesRepository:
     listGames.map(_.sorted.headOption).logErrors
 
   def upsertGame(game: Game): Future[Game] =
-
-    scala.scalajs.js.Dynamic.global.console.log(
-      api.ObjectEncoder[Game].encode(game)
-    )
     db.flatMap(
       _.readWrite(NonEmptyList.of(sevenWondersGames.name))(
         sevenWondersGames.put(game) as game

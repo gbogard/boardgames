@@ -5,6 +5,7 @@ import scala.util.Random
 import dev.guillaumebogard.idb.api.*
 import dev.guillaumebogard.idb.time.given
 import cats.implicits.*
+import scala.util.Try
 
 final case class Player(name: String, color: Color) derives ObjectEncoder, Decoder:
   val id: PlayerId = PlayerId(name)
@@ -29,13 +30,13 @@ enum GameType:
 opaque type GameId = Double
 
 object GameId:
+  def fromString(str: String): Option[GameId] = Try(str.toDouble).toOption
   def fromNow(): GameId = Instant.now().toEpochMilli.toDouble
   given Encoder[GameId] = Encoder.double
   given Decoder[GameId] = Decoder.double
+  extension (gameId: GameId) def toKey = dev.guillaumebogard.idb.api.toKey(gameId)
 
 opaque type PlayerId = String
-
-extension (playerId: PlayerId) def toString: String = playerId
 
 object PlayerId:
   def apply(playerName: String): PlayerId = playerName.toLowerCase
@@ -44,3 +45,4 @@ object PlayerId:
   given Decoder[PlayerId] = Decoder.string
   given ObjectKeyEncoder[PlayerId] = ObjectKeyEncoder.string
   given ObjectKeyDecoder[PlayerId] = ObjectKeyDecoder.string
+  extension (playerId: PlayerId) def toString: String = playerId

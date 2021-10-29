@@ -13,7 +13,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 object NewGamePage:
 
   type State = List[Player]
-  final case class Props(router: NextRouter.Facade, repo: GamesRepository)
+  final case class Props(router: NextRouter, repo: GamesRepository)
 
   class Backend($ : BackendScope[Props, State]):
     def onAdd(player: Player): Callback =
@@ -26,13 +26,13 @@ object NewGamePage:
       $.modState(_.filterNot(_.id == player.id))
 
     val onCreateGame: AsyncCallback[Unit] =
-      for {
+      for
         props <- $.props.async
         players <- $.state.async
         game = Game(players)
         _ <- AsyncCallback.fromFuture(props.repo.upsertGame(game))
         _ <- props.router.push(s"/7wonders/${game.id.toString}").async
-      } yield ()
+      yield ()
 
     def renderPlayer(player: Player) =
       <.div(
@@ -60,7 +60,8 @@ object NewGamePage:
         Header(
           "New game",
           leftSide = Header.SideItem.BackButton("/7wonders").some,
-          rightSide = if (players.size > 1) then Header.SideItem.PlusButton(onCreateGame).some else None,
+          rightSide =
+            if (players.size > 1) then Header.SideItem.PlusButton(onCreateGame).some else None,
           style = Header.Style.Marble
         ),
         NewPlayerForm(onAdd, nextColor),

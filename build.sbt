@@ -1,4 +1,4 @@
-ThisBuild / scalaVersion := "3.0.1"
+ThisBuild / scalaVersion := "3.1.0"
 ThisBuild / resolvers +=
   "Sonatype OSS Snapshots" at "https://s01.oss.sonatype.org/content/repositories/snapshots"
 

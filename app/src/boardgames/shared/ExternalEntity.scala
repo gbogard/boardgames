@@ -1,13 +1,25 @@
 package boardgames.shared
 
 import cats.Monad
+import japgolly.scalajs.react.vdom.*
+import japgolly.scalajs.react.vdom.html_<^.*
 
 enum ExternalEntity[+T]:
   case Loading
   case NotFound
   case Loaded(data: T) extends ExternalEntity[T]
 
+  def fold[U](ifEmpty: U)(f: T => U): U = this match
+    case Loaded(data) => f(data)
+    case _            => ifEmpty
+
+  def toOption: Option[T] = this match
+    case Loaded(data) => Some(data)
+    case _            => None
+
 object ExternalEntity:
+  extension [A](a: A) def loaded: ExternalEntity[A] = Loaded(a)
+
   extension [A](opt: Option[A])
     def loadedOrNotFound: ExternalEntity[A] = opt.fold(NotFound)(Loaded(_))
 

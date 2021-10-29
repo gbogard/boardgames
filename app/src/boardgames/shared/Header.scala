@@ -17,6 +17,7 @@ object Header:
 
   enum SideItem:
     case BackButton(action: Action)
+    case NextButton(action: Action)
     case PlusButton(action: Action)
 
   enum Style:
@@ -36,7 +37,7 @@ object Header:
       case Marble => s"${sheet("header")} ${sheet("marble")}"
 
   private def renderSideItem(item: SideItem) =
-    def renderAction(act: Action, node: VdomNode) =
+    def renderAction(act: Action, node: VdomNode): VdomNode =
       act match
         case to: String              => NextLink(to, node)
         case cb: Callback            => <.span(^.onClick --> cb, node)
@@ -46,7 +47,9 @@ object Header:
       case SideItem.BackButton(action) =>
         renderAction(action, Icons.BackArrow(Icons.Props("3rem")))
       case SideItem.PlusButton(action) =>
-        renderAction(action, Icons.PlusButton(Icons.Props("3rem")))
+        renderAction(action, Icons.Plus(Icons.Props("3rem")))
+      case SideItem.NextButton(action) =>
+        renderAction(action, Icons.ForwardArrow(Icons.Props("3rem")))
 
   private val component =
     ScalaFnComponent[Props](props =>
