@@ -43,12 +43,12 @@ object NewPlayerForm:
         )
       )
 
-  private val component =
-    ScalaComponent
-      .builder[Props]
-      .initialState("")
-      .renderBackend[Backend]
-      .build
+  val component =
+      ScalaComponent
+        .builder[Props]
+        .initialState("")
+        .renderBackend[Backend]
+        .build
 
   def apply(onAdd: Player => Callback, nextColor: Color) =
     component(Props(onAdd, nextColor))

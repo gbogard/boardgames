@@ -8,28 +8,28 @@ import scala.quoted.*
 object Icons:
   object BackArrow:
     @js.native
-    @JSImport("react-icons/io", "IoIosArrowBack")
+    @JSImport("@react-icons/all-files/io/IoIosArrowBack", "IoIosArrowBack")
     val raw: js.Object = js.native
     val component = JsComponent[Props, Children.None, Null](raw)
     def apply(props: Props = Props()) = component(props)
 
   object Plus:
     @js.native
-    @JSImport("react-icons/io", "IoIosAdd")
+    @JSImport("@react-icons/all-files/io/IoIosAdd", "IoIosAdd")
     val raw: js.Object = js.native
     val component = JsComponent[Props, Children.None, Null](raw)
     def apply(props: Props = Props()) = component(props)
 
   object AddPerson:
     @js.native
-    @JSImport("react-icons/io5", "IoPersonAdd")
+    @JSImport("@react-icons/all-files/io5/IoPersonAdd", "IoPersonAdd")
     val raw: js.Object = js.native
     val component = JsComponent[Props, Children.None, Null](raw)
     def apply(props: Props = Props()) = component(props)
 
   object RemoveCircle:
     @js.native
-    @JSImport("react-icons/io5", "IoRemoveCircle")
+    @JSImport("@react-icons/all-files/io5/IoRemoveCircle", "IoRemoveCircle")
     val raw: js.Object = js.native
     val component = JsComponent[Props, Children.None, Null](raw)
     def apply(props: Props = Props()) = component(props)

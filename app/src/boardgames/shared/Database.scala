@@ -16,12 +16,17 @@ object ObjectStores:
 
 object Database:
   given ExecutionContext = ExecutionContext.global
-  val db: Future[api.Database[Future]] = api.Database.open[Future](
-    api.Database.Name("boardgames"),
-    api
-      .Schema()
-      .createObjectStore(ObjectStores.sevenWondersGames)
-  )
+  val db: Future[api.Database[Future]] = (js
+    .dynamicImport {
+      api.Database.open[Future](
+        api.Database.Name("boardgames"),
+        api
+          .Schema()
+          .createObjectStore(ObjectStores.sevenWondersGames)
+      )
+    })
+    .toFuture
+    .flatten
 
   extension [T](f: Future[T])
     def logErrors: Future[T] =
