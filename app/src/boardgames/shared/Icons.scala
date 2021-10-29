@@ -4,6 +4,8 @@ import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import japgolly.scalajs.react.*
 import scala.quoted.*
+import japgolly.scalajs.react.facade.React.Component
+import boardgames.shared.Icons.Props
 
 object Icons:
   object BackArrow:
@@ -11,7 +13,7 @@ object Icons:
     @JSImport("@react-icons/all-files/io/IoIosArrowBack", "IoIosArrowBack")
     val raw: js.Object = js.native
     val component = JsComponent[Props, Children.None, Null](raw)
-    def apply(props: Props = Props()) = component(props)
+    def apply(props: Props = Props()): JsComponent.Unmounted[Props, Null] = component(props)
 
   object Plus:
     @js.native
