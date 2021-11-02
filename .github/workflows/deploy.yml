@@ -31,8 +31,7 @@ jobs:
       working-directory: ./app
     - uses: jsmrcaga/action-netlify-deploy@v1.1.0
       with:
-        working-directory: ./app
-        build_directory: ./out
+        build_directory: ./app/.next
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
         NETLIFY_SITE_ID: 81dc45ed-bfc4-4b14-acb7-28a3bead8e26
         NETLIFY_DEPLOY_TO_PROD: true
