@@ -15,10 +15,27 @@ import scala.scalajs.js.annotation.*
 
 object GamesPage:
 
-  final case class Props(router: NextRouter, repo: GamesRepository)
+  final case class Props(repo: GamesRepository)
   final case class State(games: List[Game] = Nil)
 
   final class Backend($ : BackendScope[Props, State]):
+    def renderPlayer(ps: PlayerState) =
+      <.tr(
+        ^.key := ps.player.id.toString,
+        <.th(
+          ^.className := "w-full",
+          <.div(
+            ^.className := " flex items-center",
+            <.div(
+              ^.className := "h-4 w-4 mr-2 rounded-sm",
+              ^.backgroundColor := ps.player.color.hex
+            ),
+            ps.player.name
+          )
+        ),
+        <.td(^.className := "whitespace-nowrap", ps.totalScore)
+      )
+
     def renderGame(game: Game) =
       <.div(
         ^.key := game.id.toString,
@@ -32,17 +49,11 @@ object GamesPage:
           <.tbody(
             game.players.values.toList
               .sortBy(-_.totalScore)
-              .toVdomArray(ps =>
-                <.tr(
-                  ^.key := ps.player.id.toString,
-                  <.th(^.className := "w-full", ps.player.name),
-                  <.td(^.className := "whitespace-nowrap", ps.totalScore)
-                )
-              )
+              .toVdomArray(renderPlayer)
           )
         ),
         NextLink(
-          s"/7wonders/${game.id}",
+          Routes.sevenWondersGame(game.id),
           <.button(
             ^.className := "bg-purple-300 rounded-md p-2 mt-2 w-full drop-shadow-sm",
             "Edit game"
@@ -56,32 +67,30 @@ object GamesPage:
         PageBackground(PageBackground.SevenWonders),
         Header(
           "Last games",
-          leftSide = Header.SideItem.BackButton("/").some,
-          rightSide = Header.SideItem.PlusButton("/7wonders/new").some,
+          leftSide = Header.SideItem.BackButton(Routes.home).some,
+          rightSide = Header.SideItem.PlusButton(Routes.sevenWondersNewGame).some,
           style = Header.Style.Marble
         ),
         state.games.toVdomArray(renderGame)
       )
 
-    val componentDidMount: AsyncCallback[Unit] =
-      for
-        props <- $.props.async
-        lastGames <- AsyncCallback.fromFuture(props.repo.listGames)
-        _ <- $.modState(_.copy(games = lastGames)).async
-      yield ()
+    def componentDidMount(props: Props): AsyncCallback[Unit] =
+      AsyncCallback
+        .fromFuture(props.repo.listGames)
+        .flatMap(lastGames => $.modState(_.copy(games = lastGames)).async)
 
-  val component = ScalaComponent
+  end Backend
+
+  def component = ScalaComponent
     .builder[Props]
     .initialState(State())
     .renderBackend[Backend]
-    .componentDidMount(_.backend.componentDidMount)
+    .componentDidMount($ => $.backend.componentDidMount($.props))
     .build
-
-  trait JSProps extends NextRouter.JSPropsWithRouter
 
   @JSExportTopLevel("GamesPage", "GamesPage")
   val GamesPageJS =
     GamesPage.component
-      .cmapCtorProps[JSProps](p => Props(p.router.facade, GamesRepositoryImpl))
+      .cmapCtorProps[Unit](_ => Props(GamesRepositoryImpl))
       .toJsComponent
       .raw

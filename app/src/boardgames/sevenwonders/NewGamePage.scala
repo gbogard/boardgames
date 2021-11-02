@@ -59,7 +59,7 @@ object NewGamePage:
         PageBackground(PageBackground.SevenWonders),
         Header(
           "New game",
-          leftSide = Header.SideItem.BackButton("/7wonders").some,
+          leftSide = Header.SideItem.BackButton(Routes.sevenWondersLastGames).some,
           rightSide =
             if (players.size > 1) then Header.SideItem.PlusButton(onCreateGame).some else None,
           style = Header.Style.Marble

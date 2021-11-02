@@ -5,15 +5,10 @@ import scala.scalajs.js.annotation.JSImport
 import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.html_<^.*
 import boardgames.bindings.*
+import boardgames.shared.Routes.*
 
 object Header:
-  type Action = String | AsyncCallback[Unit] | Callback
-  case class Props(
-      title: String,
-      rightSide: Option[SideItem] = None,
-      leftSide: Option[SideItem] = None,
-      style: Style = Style.Wooden
-  )
+  type Action = Route | AsyncCallback[Unit] | Callback
 
   enum SideItem:
     case BackButton(action: Action)
@@ -24,6 +19,13 @@ object Header:
     case Wooden
     case Marble
 
+  case class Props(
+      title: String,
+      rightSide: Option[SideItem] = None,
+      leftSide: Option[SideItem] = None,
+      style: Style = Style.Wooden
+  )
+
   object Style:
     @js.native
     @JSImport(
@@ -32,17 +34,22 @@ object Header:
     )
     protected val sheet: js.Dictionary[String] = js.native
 
+    // Map every Style to a CSS class
     def apply(style: Style) = style match
       case Wooden => s"${sheet("header")} ${sheet("wooden")}"
       case Marble => s"${sheet("header")} ${sheet("marble")}"
 
-  private def renderSideItem(item: SideItem) =
-    def renderAction(act: Action, node: VdomNode): VdomNode =
-      act match
-        case to: String              => NextLink(to, node)
-        case cb: Callback            => <.span(^.onClick --> cb, node)
-        case cb: AsyncCallback[Unit] => <.span(^.onClick --> cb, node)
+  // Map every action to a DOM element
+  private def renderAction(act: Action, node: VdomNode): VdomNode =
+    act match
+      // Routes are matched to the Link component provided by next.js
+      case to: Route => NextLink(to, node)
+      // Callbacks are matched to spans with onClick listeners
+      case cb: Callback            => <.span(^.onClick --> cb, node)
+      case cb: AsyncCallback[Unit] => <.span(^.onClick --> cb, node)
 
+  // Map every header item to a DOM element
+  private def renderSideItem(item: SideItem) =
     item match
       case SideItem.BackButton(action) =>
         renderAction(action, Icons.BackArrow(Icons.Props("3rem")))

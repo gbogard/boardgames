@@ -23,7 +23,7 @@ object GameButton:
   private val component =
     ScalaFnComponent[Props](props =>
       NextLink(
-        "/7wonders",
+        Routes.sevenWondersLastGames,
         <.a(
           ^.href := "#",
           ^.className := style("button"),

@@ -22,7 +22,11 @@ object ScoreInput:
         ^.key := props.player.id.toString,
         ^.className := "my-4",
         <.div(
-          ^.className := "mb-2 px-2",
+          ^.className := "mb-2 px-2 flex items-center",
+          <.div(
+            ^.className := "h-4 w-4 mr-2 rounded-sm",
+            ^.backgroundColor := props.player.color.hex
+          ),
           props.player.name
         ),
         <.input(
@@ -58,14 +62,14 @@ object GameWizardStep:
       .render_P(props =>
         val leftBtn =
           val prevStepBtn = props.prevStep.as(BackButton(props.goPrevious))
-          val prevPageBtn = BackButton("/7wonders")
+          val prevPageBtn = BackButton(Routes.sevenWondersLastGames)
           prevStepBtn.getOrElse(prevPageBtn)
         val rightBtn = props.nextStep.as(NextButton(props.goNext))
         val Data(game, updateGame) = props.data
 
         ReactFragment(
           PageBackground(PageBackground.SevenWonders),
-          Header(title, leftSide = leftBtn.some, rightSide = rightBtn),
+          Header(title, leftSide = leftBtn.some, rightSide = rightBtn, style = Header.Style.Marble),
           game.players.values.toList.toVdomArray({ case ps =>
             val scoreInputProps = ScoreInput.Props(
               ps.player,
