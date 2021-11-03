@@ -16,6 +16,7 @@ lazy val app = project
     npm := "/Users/gbogard/.nix-profile/bin/npm",
     libraryDependencies ++= Seq(
       "dev.guillaumebogard" %%% "scalajs-idb-core" % "0.2.0-SNAPSHOT",
-      "dev.guillaumebogard" %%% "scalajs-idb-java-time" % "0.2.0-SNAPSHOT"
+      "dev.guillaumebogard" %%% "scalajs-idb-java-time" % "0.2.0-SNAPSHOT",
+      "io.github.cquiroz" %%% "scala-java-time" % "2.3.0"
     )
   )

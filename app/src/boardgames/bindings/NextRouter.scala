@@ -2,6 +2,7 @@ package boardgames.bindings
 
 import japgolly.scalajs.react.*
 
+import boardgames.shared.Routes.*
 import scala.scalajs.js
 import js.JSConverters.*
 import scala.scalajs.js.annotation.JSImport
@@ -10,10 +11,10 @@ import scala.scalajs.js.annotation.JSImport
   */
 final class NextRouter(router: NextRouter.JS):
   lazy val query: Map[String, String] = router.query.toMap
-  def push(url: String, as: Option[String] = None): Callback = Callback(
+  def push(url: Route, as: Option[String] = None): Callback = Callback(
     router.push(url, as.orUndefined)
   )
-  def replace(url: String, as: Option[String] = None): Callback = Callback(
+  def replace(url: Route, as: Option[String] = None): Callback = Callback(
     router.replace(url, as.orUndefined)
   )
 
@@ -47,8 +48,8 @@ object NextRouter:
     */
   @js.native
   trait JS extends js.Object:
-    def push(url: String, as: js.UndefOr[String]): Unit = js.native
-    def replace(url: String, as: js.UndefOr[String]): Unit = js.native
+    def push(url: Route, as: js.UndefOr[String]): Unit = js.native
+    def replace(url: Route, as: js.UndefOr[String]): Unit = js.native
     val query: js.Dictionary[String] = js.native
 
   extension (router: JS) def facade = new NextRouter(router)

@@ -12,11 +12,19 @@ import japgolly.scalajs.react.vdom.html_<^.*
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.scalajs.js
 import scala.scalajs.js.annotation.*
+import java.time.Instant
+import java.time.format.DateTimeFormatter
+import java.time.ZoneId
 
 object GamesPage:
 
   final case class Props(repo: GamesRepository)
   final case class State(games: List[Game] = Nil)
+
+  private def renderDate(instant: Instant) =
+    DateTimeFormatter.ofPattern("dd/MM/yyyy")
+      .withZone(ZoneId.of("UTC"))
+      .format(instant)
 
   final class Backend($ : BackendScope[Props, State]):
     def renderPlayer(ps: PlayerState) =
@@ -43,7 +51,7 @@ object GamesPage:
         <.table(
           ^.className := "table-auto text-left",
           <.thead(
-            <.th(),
+            <.th(renderDate(game.createdAt)),
             <.th("T")
           ),
           <.tbody(
@@ -55,7 +63,7 @@ object GamesPage:
         NextLink(
           Routes.sevenWondersGame(game.id),
           <.button(
-            ^.className := "bg-purple-300 rounded-md p-2 mt-2 w-full drop-shadow-sm",
+            ^.className := "bg-purple-300 rounded-md p-2 mt-2 w-full shadow-lg",
             "Edit game"
           )
         )

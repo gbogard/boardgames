@@ -22,6 +22,20 @@ object Icons:
     val component = JsComponent[Props, Children.None, Null](raw)
     def apply(props: Props = Props()) = component(props)
 
+  object UpArrow:
+    @js.native
+    @JSImport("@react-icons/all-files/io/IoIosArrowUp", "IoIosArrowUp")
+    val raw: js.Object = js.native
+    val component = JsComponent[Props, Children.None, Null](raw)
+    def apply(props: Props = Props()) = component(props)
+
+  object DownArrow:
+    @js.native
+    @JSImport("@react-icons/all-files/io/IoIosArrowDown", "IoIosArrowDown")
+    val raw: js.Object = js.native
+    val component = JsComponent[Props, Children.None, Null](raw)
+    def apply(props: Props = Props()) = component(props)
+
   object ForwardArrow:
     @js.native
     @JSImport("@react-icons/all-files/io/IoIosArrowForward", "IoIosArrowForward")

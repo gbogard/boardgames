@@ -25,13 +25,16 @@ jobs:
       working-directory: ./app
       run: npm install
     - name: Build Scala.js sources
-      run: sbt fullLinkJS
+      run: sbt fastLinkJS
     - name: Build next.js app
       run: npm run build
       working-directory: ./app
-    - uses: jsmrcaga/action-netlify-deploy@v1.1.0
+    - name: Deploy to Netlify
+      uses: nwtgck/actions-netlify@v1.2
       with:
-        build_directory: ./app/.next
+        publish-dir: './app/.next'
+        production-branch: master
+      env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-        NETLIFY_SITE_ID: 81dc45ed-bfc4-4b14-acb7-28a3bead8e26
-        NETLIFY_DEPLOY_TO_PROD: true
+        NETLIFY_SITE_ID: 81dc45ed-bfc4-4b14-acb7-28a3bead8e2
+      timeout-minutes: 1

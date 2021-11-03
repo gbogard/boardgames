@@ -31,7 +31,7 @@ object NewGamePage:
         players <- $.state.async
         game = Game(players)
         _ <- AsyncCallback.fromFuture(props.repo.upsertGame(game))
-        _ <- props.router.push(s"/7wonders/${game.id.toString}").async
+        _ <- props.router.push(Routes.sevenWondersGame(game.id)).async
       yield ()
 
     def renderPlayer(player: Player) =

@@ -11,51 +11,16 @@ import japgolly.scalajs.react.vdom.html_<^.*
 import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.concurrent.ExecutionContext.Implicits.global
 
-object ScoreInput:
-  type Component[Score] = ScalaComponent[ScoreInput.Props[Score], Unit, Unit, CtorType.Props]
-  final case class Props[Score](player: Player, score: Score, updateScore: Score => Callback)
-
-  val int: Component[Int] = ScalaComponent
-    .builder[Props[Int]]
-    .render_P(props =>
-      <.div(
-        ^.key := props.player.id.toString,
-        ^.className := "my-4",
-        <.div(
-          ^.className := "mb-2 px-2 flex items-center",
-          <.div(
-            ^.className := "h-4 w-4 mr-2 rounded-sm",
-            ^.backgroundColor := props.player.color.hex
-          ),
-          props.player.name
-        ),
-        <.input(
-          ^.tpe := "number",
-          ^.step := 1,
-          ^.min := 0,
-          ^.className := "block w-full h-12 px-2",
-          ^.value := props.score,
-          ^.onChange ==> ((e: ReactEventFromInput) => props.updateScore(e.target.value.toInt))
-        )
-      )
-    )
-    .build
-
-  val science: Component[ScientificScore] =
-    ScalaComponent
-      .builder[Props[ScientificScore]]
-      .renderStatic(<.div())
-      .build
-
 object GameWizardStep:
 
-  case class Data(game: Game, updateGame: Game => Callback)
+  case class Data(game: Game, updateGame: Game => Callback, finishGame: AsyncCallback[Unit])
 
   def apply[Score](
       title: String,
       getScore: PlayerState => Score,
       updateScore: (PlayerState, Score) => PlayerState,
-      scoreInput: ScoreInput.Component[Score] = ScoreInput.int
+      scoreInput: ScoreInput.Component[Score] = ScoreInput.int,
+      isLastStep: Boolean = false
   ) =
     ScalaComponent
       .builder[StepWizard.StepProps[Data]]
@@ -65,7 +30,7 @@ object GameWizardStep:
           val prevPageBtn = BackButton(Routes.sevenWondersLastGames)
           prevStepBtn.getOrElse(prevPageBtn)
         val rightBtn = props.nextStep.as(NextButton(props.goNext))
-        val Data(game, updateGame) = props.data
+        val Data(game, updateGame, finishGame) = props.data
 
         ReactFragment(
           PageBackground(PageBackground.SevenWonders),
@@ -77,7 +42,16 @@ object GameWizardStep:
               newScore => updateGame(game.upsertPlayer(updateScore(ps, newScore)))
             )
             scoreInput.withKey(ps.player.id.toString)(scoreInputProps)
-          })
+          }),
+          <.div(
+            ^.display.none.when(!isLastStep),
+            ^.className := "my-4 px-2",
+            <.button(
+              ^.className := "bg-purple-300 rounded-md p-2 mt-2 w-full shadow-md",
+              ^.onClick --> finishGame,
+              "Finish game"
+            )
+          )
         )
       )
       .build
@@ -108,6 +82,14 @@ object GamePage:
         )
       yield ()
 
+    val finishGame: AsyncCallback[Unit] =
+      for
+        props <- $.props.async
+        _ <- $.modState(_.map(_.copy(state = GameState.Finished))).async
+        _ <- saveGame
+        _ <- props.router.push(Routes.sevenWondersLastGames).async
+      yield ()
+
     def componentDidUpdate(
         prevState: State,
         newState: State,
@@ -117,24 +99,24 @@ object GamePage:
       loadGame.when_(prevProps.router.query != newProps.router.query) >>
         saveGame.when_(prevState != newState)
 
-    def render(gameEntity: State): VdomNode = gameEntity match
+    def render(gameEntity: State, props: Props): VdomNode = gameEntity match
       case ExternalEntity.Loaded(game) =>
         GameStepWizard(
           StepWizard.Props(
-            GameWizardStep.Data(game, g => $.setState(g.loaded)),
+            GameWizardStep.Data(game, g => $.setState(g.loaded), finishGame),
             GameWizardStep("Wonder", _.wonder, (p, s) => p.copy(wonder = s)),
             GameWizardStep("Military", _.military, (p, s) => p.copy(military = s)),
+            GameWizardStep("Science", _.science, (p, s) => p.copy(science = s), ScoreInput.science),
             GameWizardStep("Treasury", _.treasury, (p, s) => p.copy(treasury = s)),
             GameWizardStep(
               "Civilian",
               _.civilianStructures,
               (p, s) => p.copy(civilianStructures = s)
             ),
-            GameWizardStep("Science", _.science, (p, s) => p.copy(science = s), ScoreInput.science),
             GameWizardStep("Commerce", _.commerce, (p, s) => p.copy(commerce = s)),
             GameWizardStep("Guilds", _.guilds, (p, s) => p.copy(guilds = s)),
             GameWizardStep("City", _.cities, (p, s) => p.copy(cities = s)),
-            GameWizardStep("Leaders", _.leaders, (p, s) => p.copy(leaders = s))
+            GameWizardStep("Leaders", _.leaders, (p, s) => p.copy(leaders = s), isLastStep = true)
           )
         )
       case ExternalEntity.Loading =>
