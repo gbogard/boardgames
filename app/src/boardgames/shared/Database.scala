@@ -2,8 +2,8 @@ package boardgames.shared
 
 import boardgames.sevenwonders.*
 import dev.guillaumebogard.idb.api
+import scala.concurrent.ExecutionContext.Implicits.global
 
-import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 import scala.scalajs.js
 import scala.util.Failure
@@ -15,13 +15,12 @@ object ObjectStores:
     api.ObjectStore.withInlineKeys[Game]("games", api.KeyPath.Identifier("id"))
 
 object Database:
-  given ExecutionContext = ExecutionContext.global
+  val schema = api.Schema().createObjectStore(ObjectStores.sevenWondersGames)
+
   val db: Future[api.Database[Future]] =
     api.Database.open[Future](
       api.Database.Name("boardgames"),
-      api
-        .Schema()
-        .createObjectStore(ObjectStores.sevenWondersGames)
+      schema
     )
 
   extension [T](f: Future[T])

@@ -8,20 +8,16 @@ import scala.scalajs.js.annotation.JSImport
 import boardgames.*
 import japgolly.scalajs.react.feature.ReactFragment
 
-object Homepage:
-
-  val component = ScalaComponent
-    .builder[Unit]
-    .renderStatic(
-      ReactFragment(
-        PageBackground(PageBackground.GreenFelt),
-        Header("Games"),
-        GameButton(GameType.SevenWonders)
-      )
+val Homepage = ScalaComponent
+  .builder[Unit]
+  .renderStatic(
+    ReactFragment(
+      PageBackground(PageBackground.GreenFelt),
+      Header("Games"),
+      GameButton(GameType.SevenWonders)
     )
-    .build
-
-  def apply() = component()
+  )
+  .build
 
 @JSExportTopLevel("Homepage", "Homepage")
-val HomePageJS = Homepage.component.toJsComponent.raw
+val HomePageJS = Homepage.toJsComponent.raw

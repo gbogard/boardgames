@@ -5,6 +5,7 @@ import cats.data.NonEmptyList
 import cats.implicits.*
 import scala.concurrent.*
 import ObjectStores.*
+import scala.concurrent.ExecutionContext.Implicits.global
 
 trait GamesRepository:
 

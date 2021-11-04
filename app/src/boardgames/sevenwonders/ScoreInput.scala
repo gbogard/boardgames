@@ -18,12 +18,11 @@ object ScoreInput:
         <.input(
           ^.tpe := "number",
           ^.step := 1,
-          ^.min := 0,
           ^.className := "block w-full h-12 px-2",
-          ^.value := props.score,
           ^.onChange ==> ((e: ReactEventFromInput) =>
             Try(e.target.value.toInt).fold(_ => Callback.empty, props.updateScore)
-          )
+          ),
+          ^.defaultValue := props.score
         )
       )
     )

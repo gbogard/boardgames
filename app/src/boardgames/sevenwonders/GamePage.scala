@@ -99,24 +99,28 @@ object GamePage:
       loadGame.when_(prevProps.router.query != newProps.router.query) >>
         saveGame.when_(prevState != newState)
 
+    private val steps = Seq(
+      GameWizardStep("Wonder", _.wonder, (p, s) => p.copy(wonder = s)),
+      GameWizardStep("Military", _.military, (p, s) => p.copy(military = s)),
+      GameWizardStep("Science", _.science, (p, s) => p.copy(science = s), ScoreInput.science),
+      GameWizardStep("Treasury", _.treasury, (p, s) => p.copy(treasury = s)),
+      GameWizardStep(
+        "Civilian",
+        _.civilianStructures,
+        (p, s) => p.copy(civilianStructures = s)
+      ),
+      GameWizardStep("Commerce", _.commerce, (p, s) => p.copy(commerce = s)),
+      GameWizardStep("Guilds", _.guilds, (p, s) => p.copy(guilds = s)),
+      GameWizardStep("City", _.cities, (p, s) => p.copy(cities = s)),
+      GameWizardStep("Leaders", _.leaders, (p, s) => p.copy(leaders = s), isLastStep = true)
+    )
+
     def render(gameEntity: State, props: Props): VdomNode = gameEntity match
       case ExternalEntity.Loaded(game) =>
         GameStepWizard(
           StepWizard.Props(
             GameWizardStep.Data(game, g => $.setState(g.loaded), finishGame),
-            GameWizardStep("Wonder", _.wonder, (p, s) => p.copy(wonder = s)),
-            GameWizardStep("Military", _.military, (p, s) => p.copy(military = s)),
-            GameWizardStep("Science", _.science, (p, s) => p.copy(science = s), ScoreInput.science),
-            GameWizardStep("Treasury", _.treasury, (p, s) => p.copy(treasury = s)),
-            GameWizardStep(
-              "Civilian",
-              _.civilianStructures,
-              (p, s) => p.copy(civilianStructures = s)
-            ),
-            GameWizardStep("Commerce", _.commerce, (p, s) => p.copy(commerce = s)),
-            GameWizardStep("Guilds", _.guilds, (p, s) => p.copy(guilds = s)),
-            GameWizardStep("City", _.cities, (p, s) => p.copy(cities = s)),
-            GameWizardStep("Leaders", _.leaders, (p, s) => p.copy(leaders = s), isLastStep = true)
+            steps*
           )
         )
       case ExternalEntity.Loading =>

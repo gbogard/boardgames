@@ -95,10 +95,10 @@ object GamesPage:
     .renderBackend[Backend]
     .componentDidMount($ => $.backend.componentDidMount($.props))
     .build
+    .cmapCtorProps[Unit](_ => Props(GamesRepositoryImpl))
 
   @JSExportTopLevel("GamesPage", "GamesPage")
   val GamesPageJS =
     GamesPage.component
-      .cmapCtorProps[Unit](_ => Props(GamesRepositoryImpl))
       .toJsComponent
       .raw
