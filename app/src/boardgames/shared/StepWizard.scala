@@ -3,6 +3,11 @@ package boardgames.shared
 import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.html_<^.*
 
+/** StepWizard is a generic "wizard" component that accepts a list of steps and some data, and takes
+  * care of keeping track of the user's current step. Each step is a React component that will
+  * receive the data provided to the wizard iteslf, as well as the wizard's current state, and
+  * functions to navigate between steps from the step itself.
+  */
 object StepWizard:
 
   type StepComponent[Data] = ScalaComponent[StepProps[Data], Unit, Unit, CtorType.Props]

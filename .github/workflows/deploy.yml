@@ -27,14 +27,15 @@ jobs:
     - name: Build Scala.js sources
       run: sbt fastLinkJS
     - name: Build next.js app
-      run: npm run build
+      run: npm run build && npm run export
       working-directory: ./app
     - name: Deploy to Netlify
       uses: nwtgck/actions-netlify@v1.2
       with:
-        publish-dir: './app/.next'
-        production-branch: master
+        publish-dir: 'app/out'
+        production-branch: main
+        deploy-message: "Deploy from GitHub Actions"
       env:
         NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
-        NETLIFY_SITE_ID: 81dc45ed-bfc4-4b14-acb7-28a3bead8e2
+        NETLIFY_SITE_ID: 81dc45ed-bfc4-4b14-acb7-28a3bead8e26
       timeout-minutes: 1
