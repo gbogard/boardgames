@@ -15,7 +15,8 @@ val Homepage = ScalaComponent
     ReactFragment(
       PageBackground(PageBackground.GreenFelt),
       Header("Games"),
-      GameButton(GameType.SevenWonders)
+      GameButton(GameType.SevenWonders),
+      GameButton(GameType.Hallertau),
     )
   )
   .build

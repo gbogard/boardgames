@@ -26,6 +26,7 @@ enum GameState derives ObjectEncoder, Decoder:
 
 enum GameType:
   case SevenWonders
+  case Hallertau
 
 opaque type GameId = Double
 

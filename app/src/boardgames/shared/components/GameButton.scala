@@ -20,11 +20,16 @@ object GameButton:
 
   private def image(game: GameType) = game match
     case GameType.SevenWonders => "/7wonders-btn.png"
+    case GameType.Hallertau    => "/hallertau-btn.png"
 
   private val component =
     ScalaFnComponent[Props](props =>
+      val route = props.game match
+        case GameType.SevenWonders => Routes.sevenWondersLastGames
+        case GameType.Hallertau    => Routes.hallertauLastGames
+
       NextLink(
-        Routes.sevenWondersLastGames,
+        route,
         <.a(
           ^.href := "#",
           ^.className := style("button"),

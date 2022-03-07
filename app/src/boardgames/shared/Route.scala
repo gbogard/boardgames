@@ -9,3 +9,5 @@ object Routes:
   val sevenWondersLastGames: Route = "/7wonders"
   val sevenWondersNewGame: Route = "/7wonders/new"
   def sevenWondersGame(id: GameId): Route = s"/7wonders/$id"
+
+  val hallertauLastGames: Route = "/hallertau"
