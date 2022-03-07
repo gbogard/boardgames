@@ -1,4 +1,4 @@
-package boardgames.shared
+package boardgames.shared.components
 
 import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.html_<^.*
@@ -6,6 +6,7 @@ import scala.scalajs.js.annotation.JSExportTopLevel
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
 import boardgames.*
+import boardgames.shared.*
 import japgolly.scalajs.react.feature.ReactFragment
 
 val Homepage = ScalaComponent

@@ -1,7 +1,8 @@
-package boardgames.shared
+package boardgames.shared.components
 
 import boardgames.*
 import boardgames.bindings.*
+import boardgames.shared.*
 import japgolly.scalajs.react.*
 import japgolly.scalajs.react.vdom.html_<^.*
 import scalajs.js
@@ -12,7 +13,7 @@ object GameButton:
 
   @js.native
   @JSImport(
-    "@src/boardgames/shared/GameButton.module.css",
+    "@src/boardgames/shared/components/GameButton.module.css",
     JSImport.Namespace
   )
   protected val style: js.Dictionary[String] = js.native

@@ -1,4 +1,4 @@
-package boardgames.shared
+package boardgames.shared.components
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
@@ -29,7 +29,7 @@ object Header:
   object Style:
     @js.native
     @JSImport(
-      "@src/boardgames/shared/Header.module.css",
+      "@src/boardgames/shared/components/Header.module.css",
       JSImport.Namespace
     )
     protected val sheet: js.Dictionary[String] = js.native

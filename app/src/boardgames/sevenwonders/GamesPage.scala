@@ -3,6 +3,7 @@ package boardgames.sevenwonders
 import boardgames.*
 import boardgames.bindings.*
 import boardgames.sevenwonders.*
+import boardgames.shared.components.*
 import boardgames.shared.*
 import cats.implicits.*
 import japgolly.scalajs.react.*

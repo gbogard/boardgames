@@ -1,4 +1,4 @@
-package boardgames.shared
+package boardgames.shared.components
 
 import scala.scalajs.js
 import scala.scalajs.js.annotation.JSImport
