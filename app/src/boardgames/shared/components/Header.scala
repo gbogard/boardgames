@@ -15,15 +15,10 @@ object Header:
     case NextButton(action: Action)
     case PlusButton(action: Action)
 
-  enum Style:
-    case Wooden
-    case Marble
-
   case class Props(
       title: String,
       rightSide: Option[SideItem] = None,
-      leftSide: Option[SideItem] = None,
-      style: Style = Style.Wooden
+      leftSide: Option[SideItem] = None
   )
 
   object Style:
@@ -33,11 +28,7 @@ object Header:
       JSImport.Namespace
     )
     protected val sheet: js.Dictionary[String] = js.native
-
-    // Map every Style to a CSS class
-    def apply(style: Style) = style match
-      case Wooden => s"${sheet("header")} ${sheet("wooden")}"
-      case Marble => s"${sheet("header")} ${sheet("marble")}"
+    val className = sheet("header")
 
   // Map every action to a DOM element
   private def renderAction(act: Action, node: VdomNode): VdomNode =
@@ -61,7 +52,7 @@ object Header:
   private val component =
     ScalaFnComponent[Props](props =>
       <.nav(
-        ^.className := Style(props.style),
+        ^.className := Style.className,
         <.div(props.leftSide.map(renderSideItem)),
         <.div(<.h1(^.className := "m-0 font-bold text-3xl", props.title)),
         <.div(props.rightSide.map(renderSideItem))
@@ -72,6 +63,5 @@ object Header:
   def apply(
       title: String,
       rightSide: Option[SideItem] = None,
-      leftSide: Option[SideItem] = None,
-      style: Style = Style.Wooden
-  ) = component(Props(title, rightSide, leftSide, style))
+      leftSide: Option[SideItem] = None
+  ) = component(Props(title, rightSide, leftSide))

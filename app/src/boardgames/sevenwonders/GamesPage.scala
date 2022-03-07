@@ -77,8 +77,7 @@ object GamesPage:
         Header(
           "Last games",
           leftSide = Header.SideItem.BackButton(Routes.home).some,
-          rightSide = Header.SideItem.PlusButton(Routes.sevenWondersNewGame).some,
-          style = Header.Style.Marble
+          rightSide = Header.SideItem.PlusButton(Routes.sevenWondersNewGame).some
         ),
         state.games.toVdomArray(renderGame)
       )

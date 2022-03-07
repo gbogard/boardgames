@@ -40,7 +40,7 @@ private object ScoreWizardStep:
 
         ReactFragment(
           PageBackground(PageBackground.SevenWonders),
-          Header(title, leftSide = leftBtn.some, rightSide = rightBtn, style = Header.Style.Marble),
+          Header(title, leftSide = leftBtn.some, rightSide = rightBtn),
           getPlayers(game).values.toList.toVdomArray({ case ps =>
             val player = getPlayer(ps)
             val scoreInputProps = ScoreInput.Props(

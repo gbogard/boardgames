@@ -62,8 +62,7 @@ object GenericNewGamePage:
           "New game",
           leftSide = Header.SideItem.BackButton(Routes.sevenWondersLastGames).some,
           rightSide =
-            if (players.size > 1) then Header.SideItem.PlusButton(onCreateGame).some else None,
-          style = Header.Style.Marble
+            if (players.size > 1) then Header.SideItem.PlusButton(onCreateGame).some else None
         ),
         NewPlayerForm(onAdd, nextColor),
         players.toVdomArray(renderPlayer)
