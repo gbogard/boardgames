@@ -32,10 +32,12 @@ object ScoreWizard:
       .builder[Props[Game]]
       .render_P({
         case Props(ExternalEntity.Loaded(game), updateGame, finishGame) =>
-          StepWizard.component[ScoreWizardStep.Props[Game]](StepWizard.Props(
-            ScoreWizardStep.Props(game, updateGame, finishGame),
-            wizardSteps*
-          ))
+          StepWizard.component[ScoreWizardStep.Props[Game]](
+            StepWizard.Props(
+              ScoreWizardStep.Props(game, updateGame, finishGame),
+              wizardSteps*
+            )
+          )
         case Props(ExternalEntity.Loading, _, _) => PageBackground(PageBackground.SevenWonders)
         case Props(ExternalEntity.NotFound, _, _) =>
           ReactFragment(

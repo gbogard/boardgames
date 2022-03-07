@@ -14,7 +14,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 object NewGamePage:
 
   type State = List[Player]
-  final case class Props(router: NextRouter, repo: GamesRepository)
+  final case class Props(router: NextRouter, repo: GamesRepository[Game])
 
   class Backend($ : BackendScope[Props, State]):
 

@@ -7,19 +7,7 @@ import scala.concurrent.*
 import ObjectStores.*
 import scala.concurrent.ExecutionContext.Implicits.global
 
-trait GamesRepository:
-
-  def getGame(id: GameId): Future[Option[Game]]
-
-  def listGames: Future[List[Game]]
-
-  def getLastGame: Future[Option[Game]]
-
-  def upsertGame(game: Game): Future[Game]
-
-end GamesRepository
-
-object GamesRepositoryImpl extends GamesRepository:
+object GamesRepositoryImpl extends GamesRepository[Game]:
   import Database.{*, given}
   import dev.guillaumebogard.idb.api
   import dev.guillaumebogard.idb.api.*
@@ -41,5 +29,11 @@ object GamesRepositoryImpl extends GamesRepository:
         sevenWondersGames.put(game) as game
       ).logErrors
     )
+
+  def finishGame(gameId: GameId) =
+    val tx = sevenWondersGames
+      .get(gameId.toKey)
+      .flatMap(_.traverse_(game => sevenWondersGames.put(game.copy(state = GameState.Finished))))
+    db.flatMap(_.readWrite(NonEmptyList.of(sevenWondersGames.name))(tx))
 
 end GamesRepositoryImpl

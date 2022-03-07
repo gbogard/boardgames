@@ -20,7 +20,12 @@ object GamePage:
     .step("Military", ScoreInput.int, _.military, (p, s) => p.copy(military = s))
     .step("Science", ScienceScoreInput.component, _.science, (p, s) => p.copy(science = s))
     .step("Treasury", ScoreInput.int, _.treasury, (p, s) => p.copy(treasury = s))
-    .step("Civilian", ScoreInput.int, _.civilianStructures, (p, s) => p.copy(civilianStructures = s))
+    .step(
+      "Civilian",
+      ScoreInput.int,
+      _.civilianStructures,
+      (p, s) => p.copy(civilianStructures = s)
+    )
     .step("Commerce", ScoreInput.int, _.commerce, (p, s) => p.copy(commerce = s))
     .step("Guilds", ScoreInput.int, _.guilds, (p, s) => p.copy(guilds = s))
     .step("City", ScoreInput.int, _.cities, (p, s) => p.copy(cities = s))
@@ -29,7 +34,7 @@ object GamePage:
   val wizard = ScoreWizard.build(wizardShape)
 
   type State = ExternalEntity[Game]
-  final case class Props(router: NextRouter, repo: GamesRepository)
+  final case class Props(router: NextRouter, repo: GamesRepository[Game])
 
   class Backend($ : BackendScope[Props, State]):
     val loadGame: AsyncCallback[Unit] =

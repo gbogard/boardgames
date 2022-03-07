@@ -64,7 +64,7 @@ final case class Game(
   def winner: Option[PlayerState] = players.values.maxOption
 
   def upsertPlayer(ps: PlayerState): Game = copy(players = players + ((ps.player.id, ps)))
-  def upsertPlayer(player: Player): Game =  upsertPlayer(PlayerState(player))
+  def upsertPlayer(player: Player): Game = upsertPlayer(PlayerState(player))
 
   def removePlayer(player: Player): Game =
     copy(players = players - player.id)

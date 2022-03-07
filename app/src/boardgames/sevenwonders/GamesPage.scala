@@ -19,11 +19,12 @@ import java.time.ZoneId
 
 object GamesPage:
 
-  final case class Props(repo: GamesRepository)
+  final case class Props(repo: GamesRepository[Game])
   final case class State(games: List[Game] = Nil)
 
   private def renderDate(instant: Instant) =
-    DateTimeFormatter.ofPattern("dd/MM/yyyy")
+    DateTimeFormatter
+      .ofPattern("dd/MM/yyyy")
       .withZone(ZoneId.of("UTC"))
       .format(instant)
 
@@ -99,6 +100,4 @@ object GamesPage:
 
   @JSExportTopLevel("GamesPage", "GamesPage")
   val GamesPageJS =
-    GamesPage.component
-      .toJsComponent
-      .raw
+    GamesPage.component.toJsComponent.raw
